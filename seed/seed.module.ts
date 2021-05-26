@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from './module/user/user.module';
-import { AuthModule } from './module/auth/auth.module';
-import { EncryptionModule } from './module/encryption/encryption.module';
-import { ConfigService } from './module/config/config.service';
-import { SeedModule } from '../seed/seed.module';
+
+import { AuthModule } from '../src/module/auth/auth.module';
+import { ConfigService } from '../src/module/config/config.service';
+import { EncryptionModule } from '../src/module/encryption/encryption.module';
+import { UserModule } from '../src/module/user/user.module';
+import { SeedService } from './seed.service';
 
 @Module({
   imports: [
@@ -15,23 +16,23 @@ import { SeedModule } from '../seed/seed.module';
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get('TYPEORM_HOST'),
-        port: configService.get<number>('TYPEORM_PORT'),
+        port: +configService.get<number>('TYPEORM_PORT'),
         username: configService.get('TYPEORM_USERNAME'),
         password: configService.get('TYPEORM_PASSWORD'),
         database: configService.get('TYPEORM_DATABASE'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        migrations: [__dirname + '/database/migration/*{.ts,.js}'],
+        entities: [__dirname + '/../src/**/*.entity{.ts,.js}'],
+        migrations: [__dirname + '/../src/database/migration/*{.ts,.js}'],
         migrationsRun: configService.get('TYPEORM_MIGRATIONS_RUN') === 'true',
         synchronize: configService.get('TYPEORM_SYNCHRONIZE') === 'true',
         logging: configService.get('TYPEORM_LOGGING') === 'true',
       }),
       inject: [ConfigService],
     }),
-    UserModule,
     AuthModule,
-    SeedModule,
+    UserModule,
     EncryptionModule,
   ],
-  controllers: [],
+  providers: [SeedService],
+  exports: [SeedService],
 })
-export class AppModule {}
+export class SeedModule {}
