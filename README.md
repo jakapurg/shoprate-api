@@ -21,10 +21,12 @@
 </p>
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+  
+# ShopRate API
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Back-end for [ShopRate](https://github.com/jakapurg/shoprate-web) web application. Documentation with all available endpoints & dto's can be accessed at localhost:3001/doc once the app is running.
 
 ## Installation
 
@@ -44,30 +46,45 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
-
-## Test
+## Migrations
 
 ```bash
-# unit tests
-$ npm run test
+# generate new migration
+$ npm run typeorm migration:generate -- -n <migration_name>
 
-# e2e tests
-$ npm run test:e2e
+# show migrations
+$ npm run typeorm migration:show
 
-# test coverage
-$ npm run test:cov
+# run migrations
+$ npm run typeorm migration:run
 ```
 
-## Support
+## Seeds 
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+# run seeds
+$ npm run seed
+```
+## Develop 
+Here are some guidelines for developers.
 
-## Stay in touch
+### New module
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+When you want to add new module with controller and service, always do it by using NestJS internal commands.
 
-## License
+```bash
+# Create new module
+$ nest g module NewModule
 
-Nest is [MIT licensed](LICENSE).
+# Create new controller
+$ nest g controller NewModule
+
+# Create new service
+$ nest g service NewModule
+```
+
+## Authors
+
+- [Jaka Purg](https://www.linkedin.com/in/jaka-purg-9b25551a6/)
+
+
