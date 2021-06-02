@@ -23,6 +23,9 @@ import { PutUserDocumentation } from './decorator/put-user-documentation.decorat
 import { DeleteUserDocumentation } from './decorator/delete-user-documentation.decorator';
 import { UserRoleKey } from './enum/user-role-key.enum';
 import { ExceptionCodeName } from '../../enum/exception-codes.enum';
+import { GetUser } from '../../decorator/user.decorator';
+import { RequestUserPayload } from '../auth/interface/request-user-payload.interface';
+import { GetMeDocumentation } from './decorator/get-me-documentation.decorator';
 
 @ApiTags('user')
 @Controller('user')
@@ -35,6 +38,23 @@ export class UserController {
   @Get()
   async getAll(): Promise<User[]> {
     return this.userService.getMany({});
+  }
+
+  @GetMeDocumentation()
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async getOne(
+    @GetUser() requestUserPayload: RequestUserPayload,
+  ): Promise<User> {
+    const user = await this.userService.getOne({
+      where: {
+        id: requestUserPayload.id,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException(ExceptionCodeName.USER_NOT_FOUND);
+    }
+    return user;
   }
 
   @GetUserDocumentation()

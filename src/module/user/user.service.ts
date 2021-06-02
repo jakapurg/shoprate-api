@@ -7,8 +7,11 @@ import { FindManyOptions, FindOneOptions, getRepository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { ExceptionCodeName } from '../../enum/exception-codes.enum';
 import { EncryptionService } from '../encryption/encryption.service';
+import { ShopRating } from '../shop/shop-rating.entity';
+import { Shop } from '../shop/shop.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserRoleKey } from './enum/user-role-key.enum';
 import { User } from './user.entity';
 
 @Injectable()
@@ -32,7 +35,7 @@ export class UserService {
       password: await this.encryptionService.hashPassword(
         createUserDto.password,
       ),
-      role: createUserDto.role,
+      role: createUserDto.role ? createUserDto.role : UserRoleKey.USER,
     });
     return user;
   }
@@ -47,7 +50,6 @@ export class UserService {
     if (!user) {
       throw new NotFoundException(ExceptionCodeName.USER_NOT_FOUND);
     }
-
     user.email =
       updateUserDto.email !== undefined ? updateUserDto.email : user.email;
     user.first_name =
@@ -85,6 +87,16 @@ export class UserService {
     if (!user) {
       throw new NotFoundException(ExceptionCodeName.USER_NOT_FOUND);
     }
+    await getRepository(ShopRating)
+      .createQueryBuilder()
+      .delete()
+      .where('user_id = :id', { id: user.id })
+      .execute();
+    await getRepository(Shop)
+      .createQueryBuilder()
+      .delete()
+      .where('owner_id = :owner_id', { owner_id: user.id })
+      .execute();
     await getRepository(User).remove(user);
   }
 }

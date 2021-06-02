@@ -6,6 +6,8 @@ import { AuthModule } from './module/auth/auth.module';
 import { EncryptionModule } from './module/encryption/encryption.module';
 import { ConfigService } from './module/config/config.service';
 import { SeedModule } from '../seed/seed.module';
+import { ShopModule } from './module/shop/shop.module';
+import { ShopTypeModule } from './module/shop-type/shop-type.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { SeedModule } from '../seed/seed.module';
     AuthModule,
     SeedModule,
     EncryptionModule,
+    ShopModule,
+    ShopTypeModule,
   ],
   controllers: [],
 })

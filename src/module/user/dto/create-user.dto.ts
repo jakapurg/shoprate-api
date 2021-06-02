@@ -2,6 +2,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MinLength,
 } from 'class-validator';
@@ -18,7 +19,7 @@ export class CreateUserDto {
   @MinLength(5)
   password: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(UserRoleKey)
-  role: UserRoleKey;
+  role?: UserRoleKey;
 }
