@@ -53,6 +53,7 @@ export class ShopService {
     shop.shipping_location = shipping_location;
     shop.type = shopType;
     shop.owner = owner;
+    shop.ratings = [];
     return getRepository(Shop).save(shop);
   }
 

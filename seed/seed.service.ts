@@ -35,7 +35,7 @@ export class SeedService {
       }),
     ]);
 
-    /*const [
+    const [
       shopTypeFashion,
       shopTypeTech,
       shopTypeSports,
@@ -82,7 +82,7 @@ export class SeedService {
         return getRepository(ShopType).save(shopType);
       }),
     );
-
+    /*
       const shop = new Shop()
       shop.name='Shop one';
       shop.description = 'Shop description';
